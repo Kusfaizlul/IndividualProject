@@ -1,7 +1,8 @@
 import socket as Soc
+import datetime
 
 HOST = '192.168.14.10'  # Host Address
-PORT = 37               # Port Number
+PORT = 4437               # Port Number
 
 with Soc.socket(Soc.AF_INET, Soc.SOCK_STREAM) as serv:
         serv.bind((HOST, PORT))         # Binding
@@ -14,3 +15,9 @@ with Soc.socket(Soc.AF_INET, Soc.SOCK_STREAM) as serv:
                         if not data:
                                 break           # Error when data = null
                         con.sendall(data)       # Send Msg to client in Byte
+
+		choice = con.recv(1024)
+		choice = choice.decode()
+
+		msg = datetime.datetime.now()	#Get Date And Time
+		con.send(msg.encode())
