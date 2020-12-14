@@ -5,6 +5,7 @@ import datetime
 import pytz
 from datetime import date
 from os import system
+from _thread import *
 
 def animation(msg):
         for char in msg:
@@ -12,21 +13,7 @@ def animation(msg):
                 sys.stdout.flush()
                 time.sleep(0.1)
 
-
-HOST = ''               # Host Address
-PORT = 4828             # Port Number
-
-with Soc.socket(Soc.AF_INET, Soc.SOCK_STREAM) as serv:
-        serv.bind((HOST, PORT))         # Binding
-        serv.listen()                   # Listen how many device
-
-        _ = system('clear')
-        opening = "\n \t\t\t\t  Waiting for connection ......... "
-        animation(opening)
-
-        con, addr = serv.accept()       # Accept Client Con= IP , addr=random a>
-        with con:
-                print('\n Connected by ',addr)
+def thread_client(con):
                 menu = 1
                 while True:
                         if menu == 1:
@@ -34,14 +21,9 @@ with Soc.socket(Soc.AF_INET, Soc.SOCK_STREAM) as serv:
                                 Cur_Date = date.today()
 
                                 Date = Cur_Date.strftime("%d/%m/%Y")            #dd/mm/yyyy
-                                hrs = Cur_Time.hour
-                                mnt = Cur_Time.minute
-                                sec = Cur_Time.second
-
-                                print (Date)
-                                print (hrs)
-                                print (mnt)
-                                print (sec)
+                                hrs = Cur_Time.strftime("%H")
+                                mnt = Cur_Time.strftime("%M")
+                                sec = Cur_Time.strftime("%S")
 
                                 con.send(str(Date).encode())
                                 con.send(str(hrs).encode())
@@ -71,10 +53,44 @@ with Soc.socket(Soc.AF_INET, Soc.SOCK_STREAM) as serv:
 
                                         i = con.recv(1024).decode()
                                 menu = 1
-
-                        elif ch == '2':
-                                #aboutus
-                                menu = 1
-
                         else:
                                 menu = 1
+
+
+
+HOST = ''               # Host Address
+PORT = 4828             # Port Number
+
+with Soc.socket(Soc.AF_INET, Soc.SOCK_STREAM) as serv:
+        serv.bind((HOST, PORT))         # Binding
+        serv.listen(5)                  # Listen how many device
+
+        _ = system('clear')
+        opening = "\n \t\t\t\t  Waiting for connection ......... "
+        animation(opening)
+
+        ThreatC = 0
+        Laddr = []
+
+        while True:
+                client, addr = serv.accept()       # Accept Client Con= IP , addr=random
+                Laddr.append(addr)
+
+                numb = 1
+                print ("\n\n\n\n\t\t\t\t Connection list")
+                print ("\t\t\t\t -----------------")
+                for x in Laddr:
+                        msg = "\n\t\t\t\t " + str(numb) + ". "  + str(x)
+                        animation(msg)
+                        numb += 1
+
+                start_new_thread(thread_client, (client, ))
+                ThreatC += 1
+                if ThreatC > 1:
+                        msg = "\n\t\t\t\t Multi thread Mode is enable !! \n"
+                        animation(msg)
+
+                Thread = '\n\t\t\t\t Thread Number : ' +str(ThreatC)
+                animation(Thread)
+
+        Soc.close()
