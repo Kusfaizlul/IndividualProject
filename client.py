@@ -122,7 +122,6 @@ while True:
         elif choice == '99':
                 sys.exit("\t\t\t    Exiting the Program ... \n\n\n\n")
 
-
         else :
                 print ("\n\t\t\t    Please Try Again !! ")
                 input("\t\t\t    Press Enter to continue...")
