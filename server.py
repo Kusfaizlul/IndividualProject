@@ -13,6 +13,14 @@ def animation(msg):
                 sys.stdout.flush()
                 time.sleep(0.1)
 
+
+def ping(msg):
+        for char in msg:
+                sys.stdout.write(char)
+                sys.stdout.flush()
+                time.sleep(0.05)
+
+
 def thread_client(con):
                 menu = 1
                 while True:
@@ -66,7 +74,7 @@ with Soc.socket(Soc.AF_INET, Soc.SOCK_STREAM) as serv:
         serv.listen(5)                  # Listen how many device
 
         _ = system('clear')
-        opening = "\n \t\t\t\t  Waiting for connection ......... "
+        opening = "\n \t\t\t          Waiting for connection ......... "
         animation(opening)
 
         ThreatC = 0
@@ -77,13 +85,13 @@ with Soc.socket(Soc.AF_INET, Soc.SOCK_STREAM) as serv:
                 Laddr.append(addr)
 
                 numb = 1
-                print ("\n\n\n\n\t\t\t\t Connection list")
-                print ("\t\t\t\t -----------------")
+                print ("\n\n\n\n\t\t\t\t\t Connection list")
+                print ("\t\t\t\t ------------------------------")
                 for x in Laddr:
                         msg = "\n\t\t\t\t " + str(numb) + ". "  + str(x)
-                        animation(msg)
+                        ping(msg)
                         numb += 1
-
+                print ("\n")
                 start_new_thread(thread_client, (client, ))
                 ThreatC += 1
                 if ThreatC > 1:
@@ -94,3 +102,5 @@ with Soc.socket(Soc.AF_INET, Soc.SOCK_STREAM) as serv:
                 animation(Thread)
 
         Soc.close()
+
+
