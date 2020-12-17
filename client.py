@@ -5,6 +5,7 @@ import time
 import sys
 
 _ = system('clear')
+
 print ("\n\t\t\t\t\t Booting Up the Client App ... \n")
 for i in tqdm (range (100),
                desc="\t\t Loading…",
@@ -126,4 +127,3 @@ while True:
                 print ("\n\t\t\t    Please Try Again !! ")
                 input("\t\t\t    Press Enter to continue...")
                 _ = system('clear')
-
